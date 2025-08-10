@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anantam Hostel - Caretaker Dashboard</title>
+<link rel="icon" href="img/logo.png" type="image/png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        animation: {
+          'slide-in': 'slideIn 0.3s ease-out',
+          'fade-in': 'fadeIn 0.5s ease-out',
+          'pulse-soft': 'pulseSoft 2s infinite'
+        },
+        keyframes: {
+          slideIn: {
+            '0%': { transform: 'translateX(-100%)' },
+            '100%': { transform: 'translateX(0)' }
+          },
+          fadeIn: {
+            '0%': { opacity: '0', transform: 'translateY(20px)' },
+            '100%': { opacity: '1', transform: 'translateY(0)' }
+          },
+          pulseSoft: {
+            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+            '50%': { transform: 'scale(1.02)', opacity: '0.9' }
+          }
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-teal-50">
+
+<!-- Mobile Menu Toggle Button -->
+<button id="sidebarToggle" class="fixed top-4 left-4 z-50 lg:hidden text-gray-700 p-2 bg-white shadow-lg rounded-md hover:bg-gray-50 transition-all duration-200 hover:scale-105">
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
+
+<!-- Sidebar -->
+<aside id="sidebar"
+  class="fixed top-0 left-0 h-full w-64 bg-white/95 backdrop-blur-md shadow-xl px-4 py-6 flex flex-col justify-between z-40
+         transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+
+  <!-- Logo and Navigation Container -->
+  <div class="flex flex-col">
+    <!-- Logo -->
+    <div class="flex flex-col items-center space-y-3 mb-6">
+      <img src="img/logo.png" alt="Anantam Logo" class="w-20 h-auto">
+      <h1 class="text-center text-xl font-bold text-red-700 leading-tight">
+        Anantam<br>
+        <span class="text-blue-600 text-lg">Caretaker Dashboard</span>
+      </h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex flex-col items-start w-full space-y-3">
+      <a href="#" data-section="select-student" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+        </svg>
+        <span>Select Student</span>
+      </a>
+      
+      <a href="#" data-section="students-overview" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
+        </svg>
+        <span>All Students Overview</span>
+      </a>
+      
+      <a href="#" data-section="late-entries" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+        </svg>
+        <span>All Late Entries</span>
+      </a>
+
+      <a href="#" data-section="entry-exit-logs" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+        </svg>
+        <span>All Entry/Exit Logs</span>
+      </a>
+      
+      <a href="#" data-section="parcels" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+        </svg>
+        <span>All Parcels</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Help/Contact & Logout -->
+  <div class="space-y-4">
+    <a href="#" class="text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+      </svg>
+      <span>Help/Contact</span>
+    </a>
+    <a href="#" class="text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+      </svg>
+      <span>Logout</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Overlay for mobile -->
+<div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 lg:hidden opacity-0 invisible transition-all duration-300"></div>
+
+<!-- Main Content -->
+<main class="lg:ml-64 p-4 lg:p-6 min-h-screen pt-20 lg:pt-6">
+
+<!-- Select Student Section -->
+<div id="select-student-section" class="section-content animate-fade-in">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 space-y-4 lg:space-y-0 pr-4 lg:pr-0">
+      <div class="flex-1">
+        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 pr-16 lg:pr-0">Select Student</h1>
+        <p class="text-gray-600 mt-2 text-sm lg:text-base pr-16 lg:pr-0">Search and select a student to view their detailed records</p>
+      </div>
+      <div class="bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg w-fit lg:w-auto self-end lg:self-auto ml-auto lg:ml-0">
+        <div class="text-2xl font-bold text-blue-600" id="totalStudents">127</div>
+        <div class="text-sm text-gray-600 whitespace-nowrap">Total Students</div>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="mb-6">
+      <div class="relative">
+        <input type="text" id="studentSearch" placeholder="Search by name, room number, or student ID..." 
+               class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base">
+        <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Student Grid -->
+    <div id="studentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Student cards will be populated by JavaScript -->
+    </div>
+
+    <!-- Student Details Modal -->
+    <div id="studentModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+          <!-- Modal Header -->
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Student Details</h2>
+            <button id="closeModal" class="text-gray-500 hover:text-gray-700 transition-colors">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Student Info -->
+          <div id="studentDetails" class="space-y-6">
+            <!-- Content will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Students Overview Section -->
+<div id="students-overview-section" class="section-content hidden animate-fade-in">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 space-y-4 lg:space-y-0 pr-4 lg:pr-0">
+      <div class="flex-1">
+        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 pr-16 lg:pr-0">All Students Overview</h1>
+        <p class="text-gray-600 mt-2 text-sm lg:text-base pr-16 lg:pr-0">Complete overview of all hostel residents and their current status</p>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="bg-gradient-to-r from-green-100 to-green-50 p-4 rounded-lg shadow-md">
+        <div class="text-2xl font-bold text-green-600">89</div>
+        <div class="text-sm text-green-700">Inside Hostel</div>
+      </div>
+      <div class="bg-gradient-to-r from-orange-100 to-orange-50 p-4 rounded-lg shadow-md">
+        <div class="text-2xl font-bold text-orange-600">25</div>
+        <div class="text-sm text-orange-700">Outside Hostel</div>
+      </div>
+      <div class="bg-gradient-to-r from-red-100 to-red-50 p-4 rounded-lg shadow-md">
+        <div class="text-2xl font-bold text-red-600">8</div>
+        <div class="text-sm text-red-700">Late Entries Today</div>
+      </div>
+      <div class="bg-gradient-to-r from-blue-100 to-blue-50 p-4 rounded-lg shadow-md">
+        <div class="text-2xl font-bold text-blue-600">15</div>
+        <div class="text-sm text-blue-700">Parcels Today</div>
+      </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="space-y-4">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Activities</h2>
+      
+      <div id="recentActivitiesContainer" class="space-y-4">
+        <!-- Initial 4 activities will be shown -->
+      </div>
+
+      <!-- Show More Button -->
+      <div id="showMoreContainer" class="text-center pt-4">
+        <button id="showMoreBtn" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg">
+          Show More Activities
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- All Late Entries Section -->
+<div id="late-entries-section" class="section-content hidden animate-fade-in">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 space-y-4 lg:space-y-0 pr-4 lg:pr-0">
+      <div class="flex-1">
+        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 pr-16 lg:pr-0">All Late Entries</h1>
+        <p class="text-gray-600 mt-2 text-sm lg:text-base pr-16 lg:pr-0">Monitor and track all late entry violations</p>
+      </div>
+      <div class="bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg w-fit lg:w-auto self-end lg:self-auto ml-auto lg:ml-0">
+        <div class="text-2xl font-bold text-red-600" id="totalLateEntries">23</div>
+        <div class="text-sm text-gray-600 whitespace-nowrap">This Week</div>
+      </div>
+    </div>
+
+    <!-- Late Entries List -->
+    <div id="lateEntriesContainer" class="space-y-4">
+      <!-- Late entries will be populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- Entry/Exit Logs Section -->
+<div id="entry-exit-logs-section" class="section-content hidden animate-fade-in">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 space-y-4 lg:space-y-0 pr-4 lg:pr-0">
+      <div class="flex-1">
+        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 pr-16 lg:pr-0">All Entry/Exit Logs</h1>
+        <p class="text-gray-600 mt-2 text-sm lg:text-base pr-16 lg:pr-0">Complete log of all student entry and exit activities</p>
+      </div>
+      <div class="bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg w-fit lg:w-auto self-end lg:self-auto ml-auto lg:ml-0">
+        <div class="text-2xl font-bold text-teal-600" id="totalLogs">156</div>
+        <div class="text-sm text-gray-600 whitespace-nowrap">Today's Activities</div>
+      </div>
+    </div>
+
+    <!-- Entry/Exit Records -->
+    <div class="space-y-4">
+      <div class="bg-gradient-to-r from-orange-100 to-orange-50 border-l-4 border-orange-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-orange-500 rounded-full p-2">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-orange-800">Priya Sharma - Room 102B</h3>
+              <p class="text-orange-600 text-sm">Exit Time: August 8, 2025 at 2:45 PM</p>
+              <p class="text-orange-700 text-sm">Expected Return: August 8, 2025 • ID: AN2024002</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">EXIT</div>
+            <p class="text-orange-600 text-xs mt-1">30 mins ago</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-green-100 to-green-50 border-l-4 border-green-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-green-500 rounded-full p-2">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v1h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h3V3z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-green-800">Kavya Reddy - Room 208A</h3>
+              <p class="text-green-600 text-sm">Entry Time: August 8, 2025 at 1:30 PM</p>
+              <p class="text-green-700 text-sm">Previous Exit: August 8, 2025 at 9:00 AM • ID: AN2024004</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">ENTRY</div>
+            <p class="text-green-600 text-xs mt-1">1 hour ago</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-blue-500 rounded-full p-2">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v1h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h3V3z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-blue-800">Raj Patel - Room 201A</h3>
+              <p class="text-blue-600 text-sm">Entry Time: August 8, 2025 at 12:15 PM</p>
+              <p class="text-blue-700 text-sm">Previous Exit: August 8, 2025 at 8:30 AM • ID: AN2024001</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">ENTRY</div>
+            <p class="text-blue-600 text-xs mt-1">2 hours ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- All Parcels Section -->
+<div id="parcels-section" class="section-content hidden animate-fade-in">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 space-y-4 lg:space-y-0 pr-4 lg:pr-0">
+      <div class="flex-1">
+        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 pr-16 lg:pr-0">All Parcels</h1>
+        <p class="text-gray-600 mt-2 text-sm lg:text-base pr-16 lg:pr-0">Manage and track all parcel deliveries across the hostel</p>
+      </div>
+      <div class="bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg w-fit lg:w-auto self-end lg:self-auto ml-auto lg:ml-0">
+        <div class="text-2xl font-bold text-teal-600" id="totalParcels">42</div>
+        <div class="text-sm text-gray-600 whitespace-nowrap">Total Parcels Today</div>
+      </div>
+    </div>
+
+    <!-- Parcel Notifications -->
+    <div class="space-y-4">
+      <div class="bg-gradient-to-r from-green-100 to-green-50 border-l-4 border-green-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-green-500 rounded-full p-2">
+              <span class="text-white text-xl">⚡</span>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-green-800">Vikram Joshi - Room 401B</h3>
+              <p class="text-green-600 text-sm">Blinkit Delivery • Order #BL789456 • ID: AN2024005</p>
+              <p class="text-green-700 text-sm">Grocery items delivered</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">DELIVERED</div>
+            <p class="text-green-600 text-xs mt-1">15 mins ago</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-yellow-100 to-yellow-50 border-l-4 border-yellow-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-yellow-500 rounded-full p-2">
+              <span class="text-white text-xl">📦</span>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-yellow-800">Sneha Gupta - Room 103C</h3>
+              <p class="text-yellow-600 text-sm">Amazon Delivery • Tracking #AMZ123789 • ID: AN2024006</p>
+              <p class="text-yellow-700 text-sm">Electronics package delivered</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">DELIVERED</div>
+            <p class="text-yellow-600 text-xs mt-1">1 hour ago</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-blue-500 rounded-full p-2">
+              <span class="text-white text-xl">🚚</span>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-blue-800">Arjun Singh - Room 305C</h3>
+              <p class="text-blue-600 text-sm">BlueDart Express • AWB #BD567890 • ID: AN2024003</p>
+              <p class="text-blue-700 text-sm">Document courier delivered</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">DELIVERED</div>
+            <p class="text-blue-600 text-xs mt-1">2 hours ago</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-purple-100 to-purple-50 border-l-4 border-purple-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-purple-500 rounded-full p-2">
+              <span class="text-white text-xl">📮</span>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-purple-800">Kavya Reddy - Room 208A</h3>
+              <p class="text-purple-600 text-sm">Flipkart • Order #FK456123 • ID: AN2024004</p>
+              <p class="text-purple-700 text-sm">Clothing package delivered</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">DELIVERED</div>
+            <p class="text-purple-600 text-xs mt-1">3 hours ago</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-orange-100 to-orange-50 border-l-4 border-orange-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-orange-500 rounded-full p-2">
+              <span class="text-white text-xl">⏳</span>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-orange-800">Raj Patel - Room 201A</h3>
+              <p class="text-orange-600 text-sm">Myntra • Order #MYN789012 • ID: AN2024001</p>
+              <p class="text-orange-700 text-sm">Awaiting pickup by student</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">PENDING</div>
+            <p class="text-orange-600 text-xs mt-1">4 hours ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// Student data with detailed information
+const studentsData = [
+  {
+    id: 'AN2024001',
+    name: 'Raj Patel',
+    room: '201A',
+    block: 'A Block',
+    branch: 'Computer Science Engineering',
+    phone: '+91 98765 43210',
+    email: 'raj.patel@anantam.edu.in',
+    status: 'inside',
+    statusText: 'Inside Hostel',
+    avatar: 'blue',
+    recentActivity: 'Entry at 12:15 PM today',
+    parentPhone: '+91 98765 43200',
+    year: '3rd Year',
+    emergencyContact: 'Father - Ramesh Patel'
+  },
+  {
+    id: 'AN2024002',
+    name: 'Priya Sharma',
+    room: '102B',
+    block: 'A Block',
+    branch: 'Electronics & Communication',
+    phone: '+91 87654 32109',
+    email: 'priya.sharma@anantam.edu.in',
+    status: 'outside',
+    statusText: 'Outside Hostel',
+    avatar: 'orange',
+    recentActivity: 'Exit at 2:45 PM today',
+    parentPhone: '+91 87654 32100',
+    year: '2nd Year',
+    emergencyContact: 'Mother - Sunita Sharma'
+  },
+  {
+    id: 'AN2024003',
+    name: 'Arjun Singh',
+    room: '305C',
+    block: 'B Block',
+    branch: 'Mechanical Engineering',
+    phone: '+91 76543 21098',
+    email: 'arjun.singh@anantam.edu.in',
+    status: 'late',
+    statusText: 'Late Entry Yesterday',
+    avatar: 'red',
+    recentActivity: 'Late entry at 11:45 PM yesterday',
+    parentPhone: '+91 76543 21090',
+    year: '4th Year',
+    emergencyContact: 'Father - Vikram Singh'
+  },
+  {
+    id: 'AN2024004',
+    name: 'Kavya Reddy',
+    room: '208A',
+    block: 'A Block',
+    branch: 'Information Technology',
+    phone: '+91 65432 10987',
+    email: 'kavya.reddy@anantam.edu.in',
+    status: 'inside',
+    statusText: 'Inside Hostel',
+    avatar: 'green',
+    recentActivity: 'Entry at 1:30 PM today',
+    parentPhone: '+91 65432 10980',
+    year: '2nd Year',
+    emergencyContact: 'Father - Ravi Reddy'
+  },
+  {
+    id: 'AN2024005',
+    name: 'Vikram Joshi',
+    room: '401B',
+    block: 'C Block',
+    branch: 'Civil Engineering',
+    phone: '+91 54321 09876',
+    email: 'vikram.joshi@anantam.edu.in',
+    status: 'parcel',
+    statusText: 'New Parcel',
+    avatar: 'blue',
+    recentActivity: 'Blinkit delivery received',
+    parentPhone: '+91 54321 09870',
+    year: '1st Year',
+    emergencyContact: 'Mother - Meera Joshi'
+  },
+  {
+    id: 'AN2024006',
+    name: 'Sneha Gupta',
+    room: '103C',
+    block: 'A Block',
+    branch: 'Electrical Engineering',
+    phone: '+91 43210 98765',
+    email: 'sneha.gupta@anantam.edu.in',
+    status: 'inside',
+    statusText: 'Inside Hostel',
+    avatar: 'purple',
+    recentActivity: 'Amazon delivery received',
+    parentPhone: '+91 43210 98760',
+    year: '3rd Year',
+    emergencyContact: 'Father - Rajesh Gupta'
+  }
+];
+
+// Recent activities data for overview section
+const recentActivitiesData = [
+  {
+    type: 'late',
+    student: 'Arjun Singh',
+    room: '305C',
+    id: 'AN2024003',
+    time: 'August 8, 2025 at 11:45 PM',
+    details: 'Late by: 2 hours 45 minutes',
+    timeAgo: 'Today',
+    status: 'VIOLATION'
+  },
+  {
+    type: 'late',
+    student: 'Rohit Kumar',
+    room: '204A',
+    id: 'AN2024007',
+    time: 'August 7, 2025 at 10:30 PM',
+    details: 'Late by: 1 hour 30 minutes',
+    timeAgo: 'Yesterday',
+    status: 'VIOLATION'
+  },
+  {
+    type: 'late',
+    student: 'Meera Patel',
+    room: '301B',
+    id: 'AN2024008',
+    time: 'August 7, 2025 at 9:45 PM',
+    details: 'Late by: 45 minutes',
+    timeAgo: 'Yesterday',
+    status: 'VIOLATION'
+  },
+  {
+    type: 'entry',
+    student: 'Kavya Reddy',
+    room: '208A',
+    id: 'AN2024004',
+    time: 'August 8, 2025 at 1:30 PM',
+    details: 'Previous Exit: August 8, 2025 at 9:00 AM',
+    timeAgo: '1 hour ago',
+    status: 'ENTRY'
+  },
+  {
+    type: 'exit',
+    student: 'Priya Sharma',
+    room: '102B',
+    id: 'AN2024002',
+    time: 'August 8, 2025 at 2:45 PM',
+    details: 'Expected Return: August 8, 2025',
+    timeAgo: '30 mins ago',
+    status: 'EXIT'
+  },
+  {
+    type: 'parcel',
+    student: 'Vikram Joshi',
+    room: '401B',
+    id: 'AN2024005',
+    time: 'August 8, 2025 at 3:00 PM',
+    details: 'Blinkit Delivery - Grocery items',
+    timeAgo: '15 mins ago',
+    status: 'DELIVERED'
+  },
+  {
+    type: 'late',
+    student: 'Amit Verma',
+    room: '405A',
+    id: 'AN2024009',
+    time: 'August 6, 2025 at 11:15 PM',
+    details: 'Late by: 2 hours 15 minutes',
+    timeAgo: '2 days ago',
+    status: 'VIOLATION'
+  },
+  {
+    type: 'entry',
+    student: 'Raj Patel',
+    room: '201A',
+    id: 'AN2024001',
+    time: 'August 8, 2025 at 12:15 PM',
+    details: 'Previous Exit: August 8, 2025 at 8:30 AM',
+    timeAgo: '2 hours ago',
+    status: 'ENTRY'
+  }
+];
+
+// Late entries data
+const lateEntriesData = [
+  {
+    student: 'Arjun Singh',
+    room: '305C',
+    id: 'AN2024003',
+    time: 'August 8, 2025 at 11:45 PM',
+    lateBy: '2 hours 45 minutes',
+    timeAgo: 'Today',
+    severity: 'high'
+  },
+  {
+    student: 'Rohit Kumar',
+    room: '204A',
+    id: 'AN2024007',
+    time: 'August 7, 2025 at 10:30 PM',
+    lateBy: '1 hour 30 minutes',
+    timeAgo: 'Yesterday',
+    severity: 'medium'
+  },
+  {
+    student: 'Meera Patel',
+    room: '301B',
+    id: 'AN2024008',
+    time: 'August 7, 2025 at 9:45 PM',
+    lateBy: '45 minutes',
+    timeAgo: 'Yesterday',
+    severity: 'low'
+  },
+  {
+    student: 'Amit Verma',
+    room: '405A',
+    id: 'AN2024009',
+    time: 'August 6, 2025 at 11:15 PM',
+    lateBy: '2 hours 15 minutes',
+    timeAgo: '2 days ago',
+    severity: 'high'
+  },
+  {
+    student: 'Sanjay Yadav',
+    room: '302C',
+    id: 'AN2024010',
+    time: 'August 6, 2025 at 9:30 PM',
+    lateBy: '30 minutes',
+    timeAgo: '2 days ago',
+    severity: 'low'
+  }
+];
+
+class CaretakerDashboard {
+  constructor() {
+    this.currentVisibleActivities = 4;
+    this.init();
+    this.bindEvents();
+    this.populateStudentGrid();
+    this.populateRecentActivities();
+    this.populateLateEntries();
+    this.setActiveSection('select-student');
+  }
+
+  init() {
+    this.elements = {
+      toggleButton: document.getElementById('sidebarToggle'),
+      sidebar: document.getElementById('sidebar'),
+      overlay: document.getElementById('sidebarOverlay'),
+      navItems: document.querySelectorAll('.nav-item'),
+      sections: document.querySelectorAll('.section-content'),
+      totalStudents: document.getElementById('totalStudents'),
+      totalLateEntries: document.getElementById('totalLateEntries'),
+      totalLogs: document.getElementById('totalLogs'),
+      totalParcels: document.getElementById('totalParcels'),
+      studentSearch: document.getElementById('studentSearch'),
+      studentGrid: document.getElementById('studentGrid'),
+      studentModal: document.getElementById('studentModal'),
+      closeModal: document.getElementById('closeModal'),
+      studentDetails: document.getElementById('studentDetails'),
+      recentActivitiesContainer: document.getElementById('recentActivitiesContainer'),
+      showMoreBtn: document.getElementById('showMoreBtn'),
+      showMoreContainer: document.getElementById('showMoreContainer'),
+      lateEntriesContainer: document.getElementById('lateEntriesContainer')
+    };
+  }
+
+  bindEvents() {
+    // Mobile sidebar toggle
+    if (this.elements.toggleButton) {
+      this.elements.toggleButton.addEventListener('click', () => this.toggleSidebar());
+    }
+
+    // Overlay click to close sidebar
+    if (this.elements.overlay) {
+      this.elements.overlay.addEventListener('click', () => this.closeSidebar());
+    }
+
+    // Navigation items
+    this.elements.navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const section = item.getAttribute('data-section');
+        if (section) {
+          this.showSection(section);
+          this.closeSidebar();
+        }
+      });
+    });
+
+    // Student search functionality
+    if (this.elements.studentSearch) {
+      this.elements.studentSearch.addEventListener('input', (e) => {
+        this.filterStudents(e.target.value);
+      });
+    }
+
+    // Modal close events
+    if (this.elements.closeModal) {
+      this.elements.closeModal.addEventListener('click', () => this.closeStudentModal());
+    }
+
+    if (this.elements.studentModal) {
+      this.elements.studentModal.addEventListener('click', (e) => {
+        if (e.target === this.elements.studentModal) {
+          this.closeStudentModal();
+        }
+      });
+    }
+
+    // Show more button
+    if (this.elements.showMoreBtn) {
+      this.elements.showMoreBtn.addEventListener('click', () => this.showMoreActivities());
+    }
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      const isClickInsideSidebar = this.elements.sidebar?.contains(e.target);
+      const isToggleButton = e.target === this.elements.toggleButton || this.elements.toggleButton?.contains(e.target);
+      
+      if (!isClickInsideSidebar && !isToggleButton && window.innerWidth < 1024) {
+        this.closeSidebar();
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1024) {
+        this.closeSidebar();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeSidebar();
+        this.closeStudentModal();
+      }
+    });
+  }
+
+  populateStudentGrid() {
+    if (!this.elements.studentGrid) return;
+
+    const studentCards = studentsData.map(student => {
+      const avatarColors = {
+        blue: 'bg-blue-100 text-blue-600',
+        orange: 'bg-orange-100 text-orange-600',
+        red: 'bg-red-100 text-red-600',
+        green: 'bg-green-100 text-green-600',
+        purple: 'bg-purple-100 text-purple-600'
+      };
+
+      const statusColors = {
+        inside: 'bg-green-200 text-black-600',
+        outside: 'bg-orange-200 text-black-600',
+        late: 'bg-red-200 text-black-600',
+        parcel: 'bg-blue-200 text-black-600'
+      };
+
+      return `
+        <div class="student-card bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-4 border border-gray-200 cursor-pointer hover:border-blue-300 transform hover:scale-105" data-student-id="${student.id}">
+          <div class="flex items-center space-x-4">
+            <div class="${avatarColors[student.avatar]} rounded-full p-3">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-800">${student.name}</h3>
+              <p class="text-sm text-gray-600">${student.room} • ${student.id}</p>
+              <div class="flex items-center space-x-2 mt-2">
+                <span class="inline-block w-2 h-2 ${statusColors[student.status]} rounded-full"></span>
+                <span class="text-xs ${statusColors[student.status]}">${student.statusText}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    this.elements.studentGrid.innerHTML = studentCards;
+
+    // Add click event listeners to student cards
+    document.querySelectorAll('.student-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const studentId = card.getAttribute('data-student-id');
+        this.showStudentDetails(studentId);
+      });
+    });
+  }
+
+  showStudentDetails(studentId) {
+    const student = studentsData.find(s => s.id === studentId);
+    if (!student || !this.elements.studentDetails) return;
+
+    const detailsHTML = `
+      <!-- Student Profile Header -->
+      <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 mb-6">
+        <div class="flex items-center space-x-6">
+          <div class="bg-blue-200 rounded-full p-4">
+            <svg class="w-12 h-12 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-bold text-gray-800">${student.name}</h3>
+            <p class="text-blue-600 font-medium">${student.branch}</p>
+            <p class="text-gray-600">${student.year} • ${student.room} (${student.block})</p>
+          </div>
+          <div class="text-right">
+            <div class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium">${student.id}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="grid md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+            </svg>
+            Contact Information
+          </h4>
+          <div class="space-y-2 text-sm">
+            <div><span class="font-medium">Email:</span> ${student.email}</div>
+            <div><span class="font-medium">Phone:</span> ${student.phone}</div>
+            <div><span class="font-medium">Emergency:</span> ${student.emergencyContact}</div>
+            <div><span class="font-medium">Parent:</span> ${student.parentPhone}</div>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+            </svg>
+            Hostel Information
+          </h4>
+          <div class="space-y-2 text-sm">
+            <div><span class="font-medium">Room:</span> ${student.room}</div>
+            <div><span class="font-medium">Block:</span> ${student.block}</div>
+            <div><span class="font-medium">Status:</span> ${student.statusText}</div>
+            <div><span class="font-medium">Recent Activity:</span> ${student.recentActivity}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent History -->
+      <div class="bg-gray-50 rounded-lg p-4">
+        <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+          </svg>
+          Recent Activity History
+        </h4>
+        <div class="space-y-3">
+          <div class="bg-white rounded p-3 border-l-4 border-green-500">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium text-green-800">Entry Recorded</p>
+                <p class="text-sm text-gray-600">August 8, 2025 at 12:15 PM</p>
+              </div>
+              <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">ENTRY</span>
+            </div>
+          </div>
+          <div class="bg-white rounded p-3 border-l-4 border-orange-500">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium text-orange-800">Exit Recorded</p>
+                <p class="text-sm text-gray-600">August 8, 2025 at 8:30 AM</p>
+              </div>
+              <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs font-medium">EXIT</span>
+            </div>
+          </div>
+          <div class="bg-white rounded p-3 border-l-4 border-blue-500">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium text-blue-800">Parcel Received</p>
+                <p class="text-sm text-gray-600">August 7, 2025 at 4:20 PM</p>
+              </div>
+              <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">PARCEL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.elements.studentDetails.innerHTML = detailsHTML;
+    this.openStudentModal();
+  }
+
+  openStudentModal() {
+    if (this.elements.studentModal) {
+      this.elements.studentModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  closeStudentModal() {
+    if (this.elements.studentModal) {
+      this.elements.studentModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  populateRecentActivities() {
+    if (!this.elements.recentActivitiesContainer) return;
+
+    this.renderActivities();
+  }
+
+  renderActivities() {
+    const activitiesToShow = recentActivitiesData.slice(0, this.currentVisibleActivities);
+    
+    const activitiesHTML = activitiesToShow.map(activity => {
+      const colorSchemes = {
+        late: 'from-red-100 to-red-50 border-red-500 bg-red-500 text-red-800 text-red-600 text-red-700',
+        entry: 'from-green-100 to-green-50 border-green-500 bg-green-500 text-green-800 text-green-600 text-green-700',
+        exit: 'from-orange-100 to-orange-50 border-orange-500 bg-orange-500 text-orange-800 text-orange-600 text-orange-700',
+        parcel: 'from-blue-100 to-blue-50 border-blue-500 bg-blue-500 text-blue-800 text-blue-600 text-blue-700'
+      };
+
+      const scheme = colorSchemes[activity.type].split(' ');
+      const [gradientFrom, gradientTo, borderColor, bgColor, titleColor, subtitleColor, detailColor] = scheme;
+
+      const icon = {
+        late: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+               </svg>`,
+        entry: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                 <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v1h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h3V3z" clip-rule="evenodd"/>
+                </svg>`,
+        exit: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+               <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+               </svg>`,
+        parcel: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                 <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                 </svg>`
+      };
+
+      return `
+        <div class="bg-gradient-to-r ${gradientFrom} ${gradientTo} border-l-4 ${borderColor} rounded-lg p-4 lg:p-6 shadow-md">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-4">
+              <div class="${bgColor} rounded-full p-2">
+                ${icon[activity.type]}
+              </div>
+              <div>
+                <h3 class="text-base lg:text-lg font-semibold ${titleColor}">${activity.student} - ${activity.room}</h3>
+                <p class="${subtitleColor} text-sm">${activity.time}</p>
+                <p class="${detailColor} text-sm">${activity.details} • ${activity.id}</p>
+              </div>
+            </div>
+            <div class="text-left sm:text-right">
+              <div class="${bgColor} text-white px-3 py-1 rounded-full text-sm font-medium inline-block">${activity.status}</div>
+              <p class="${subtitleColor} text-xs mt-1">${activity.timeAgo}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    this.elements.recentActivitiesContainer.innerHTML = activitiesHTML;
+
+    // Show/hide the "Show More" button
+    if (this.currentVisibleActivities >= recentActivitiesData.length) {
+      this.elements.showMoreContainer.style.display = 'none';
+    } else {
+      this.elements.showMoreContainer.style.display = 'block';
+    }
+  }
+
+  showMoreActivities() {
+    this.currentVisibleActivities = Math.min(this.currentVisibleActivities + 4, recentActivitiesData.length);
+    this.renderActivities();
+    
+    if (this.elements.showMoreBtn) {
+      this.elements.showMoreBtn.innerHTML = this.currentVisibleActivities >= recentActivitiesData.length 
+        ? 'All Activities Shown' 
+        : 'Show More Activities';
+      
+      if (this.currentVisibleActivities >= recentActivitiesData.length) {
+        this.elements.showMoreBtn.disabled = true;
+        this.elements.showMoreBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+    }
+  }
+
+  populateLateEntries() {
+    if (!this.elements.lateEntriesContainer) return;
+
+    const lateEntriesHTML = lateEntriesData.map(entry => {
+      const severityColors = {
+        high: 'from-red-100 to-red-50 border-red-600 bg-red-600 text-red-800 text-red-600 text-red-700',
+        medium: 'from-orange-100 to-orange-50 border-orange-500 bg-orange-500 text-orange-800 text-orange-600 text-orange-700',
+        low: 'from-yellow-100 to-yellow-50 border-yellow-500 bg-yellow-500 text-yellow-800 text-yellow-600 text-yellow-700'
+      };
+
+      const scheme = severityColors[entry.severity].split(' ');
+      const [gradientFrom, gradientTo, borderColor, bgColor, titleColor, subtitleColor, detailColor] = scheme;
+
+      return `
+        <div class="bg-gradient-to-r ${gradientFrom} ${gradientTo} border-l-4 ${borderColor} rounded-lg p-4 lg:p-6 shadow-md">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-4">
+              <div class="${bgColor} rounded-full p-2">
+                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-base lg:text-lg font-semibold ${titleColor}">${entry.student} - ${entry.room}</h3>
+                <p class="${subtitleColor} text-sm">Entry Time: ${entry.time}</p>
+                <p class="${detailColor} text-sm">Late by: ${entry.lateBy} • ${entry.id}</p>
+              </div>
+            </div>
+            <div class="text-left sm:text-right">
+              <div class="${bgColor} text-white px-3 py-1 rounded-full text-sm font-medium inline-block">VIOLATION</div>
+              <p class="${subtitleColor} text-xs mt-1">${entry.timeAgo}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    this.elements.lateEntriesContainer.innerHTML = lateEntriesHTML;
+  }
+
+  toggleSidebar() {
+    const isOpen = !this.elements.sidebar?.classList.contains('-translate-x-full');
+    if (isOpen) {
+      this.closeSidebar();
+    } else {
+      this.openSidebar();
+    }
+  }
+
+  openSidebar() {
+    this.elements.sidebar?.classList.remove('-translate-x-full');
+    this.elements.overlay?.classList.remove('opacity-0', 'invisible');
+    this.elements.overlay?.classList.add('opacity-100', 'visible');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  closeSidebar() {
+    this.elements.sidebar?.classList.add('-translate-x-full');
+    this.elements.overlay?.classList.remove('opacity-100', 'visible');
+    this.elements.overlay?.classList.add('opacity-0', 'invisible');
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  showSection(sectionName) {
+    // Hide all sections
+    this.elements.sections.forEach(section => {
+      section.classList.add('hidden');
+    });
+
+    // Show target section
+    const targetSection = document.getElementById(`${sectionName}-section`);
+    if (targetSection) {
+      targetSection.classList.remove('hidden');
+    }
+
+    this.setActiveNavItem(sectionName);
+  }
+
+  setActiveNavItem(sectionName) {
+    // Remove active state from all nav items
+    this.elements.navItems.forEach(item => {
+      item.classList.remove('bg-red-100', 'text-red-700');
+      item.classList.add('text-gray-700');
+    });
+
+    // Add active state to current nav item
+    const activeNavItem = document.querySelector(`[data-section="${sectionName}"]`);
+    if (activeNavItem) {
+      activeNavItem.classList.add('bg-red-100', 'text-red-700');
+      activeNavItem.classList.remove('text-gray-700');
+    }
+  }
+
+  setActiveSection(sectionName) {
+    this.showSection(sectionName);
+  }
+
+  filterStudents(searchTerm) {
+    const studentCards = document.querySelectorAll('.student-card');
+    const lowercaseSearch = searchTerm.toLowerCase();
+
+    studentCards.forEach(card => {
+      const studentName = card.querySelector('h3').textContent.toLowerCase();
+      const roomInfo = card.querySelector('p').textContent.toLowerCase();
+      
+      if (studentName.includes(lowercaseSearch) || roomInfo.includes(lowercaseSearch)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300';
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => {
+        if (document.body.contains(toast)) {
+          document.body.removeChild(toast);
+        }
+      }, 300);
+    }, 2000);
+  }
+
+  // Simulate real-time updates
+  simulateRealtimeUpdates() {
+    // Update counters with realistic values
+    if (this.elements.totalStudents) {
+      const count = Math.floor(Math.random() * 20) + 120;
+      this.elements.totalStudents.textContent = count;
+      this.animateCountUpdate(this.elements.totalStudents);
+    }
+
+    if (this.elements.totalLateEntries) {
+      const count = Math.floor(Math.random() * 10) + 15;
+      this.elements.totalLateEntries.textContent = count;
+      this.animateCountUpdate(this.elements.totalLateEntries);
+    }
+
+    if (this.elements.totalLogs) {
+      const count = Math.floor(Math.random() * 50) + 100;
+      this.elements.totalLogs.textContent = count;
+      this.animateCountUpdate(this.elements.totalLogs);
+    }
+
+    if (this.elements.totalParcels) {
+      const count = Math.floor(Math.random() * 20) + 30;
+      this.elements.totalParcels.textContent = count;
+      this.animateCountUpdate(this.elements.totalParcels);
+    }
+  }
+
+  animateCountUpdate(element) {
+    element.style.transform = 'scale(1.2)';
+    element.style.transition = 'transform 0.3s ease';
+    setTimeout(() => {
+      element.style.transform = 'scale(1)';
+    }, 300);
+  }
+
+  startRealtimeUpdates() {
+    // Run simulation every 45 seconds
+    setInterval(() => this.simulateRealtimeUpdates(), 45000);
+  }
+}
+
+// Initialize the dashboard when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  const dashboard = new CaretakerDashboard();
+  dashboard.startRealtimeUpdates();
+});
+
+// Handle orientation change on mobile devices
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => {
+    if (window.innerWidth >= 1024) {
+      const dashboard = new CaretakerDashboard();
+      dashboard.closeSidebar();
+    }
+  }, 100);
+});
+
+// Add smooth scrolling for better UX
+document.documentElement.style.scrollBehavior = 'smooth';
+
+// Add touch support for better mobile interaction
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const sidebar = document.getElementById('sidebar');
+  const swipeThreshold = 50;
+  
+  // Swipe right to open sidebar (from left edge)
+  if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+    if (sidebar?.classList.contains('-translate-x-full')) {
+      const dashboard = new CaretakerDashboard();
+      dashboard.openSidebar();
+    }
+  }
+  
+  // Swipe left to close sidebar
+  if (touchStartX - touchEndX > swipeThreshold && touchStartX > 200) {
+    if (!sidebar?.classList.contains('-translate-x-full')) {
+      const dashboard = new CaretakerDashboard();
+      dashboard.closeSidebar();
+    }
+  }
+}
+</script>
+</body>
+</html>

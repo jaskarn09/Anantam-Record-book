@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anantam Hostel Dashboard</title>
+<link rel="icon" href="img/logo.png" type="image/png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        animation: {
+          'slide-in': 'slideIn 0.3s ease-out',
+          'fade-in': 'fadeIn 0.5s ease-out'
+        },
+        keyframes: {
+          slideIn: {
+            '0%': { transform: 'translateX(-100%)' },
+            '100%': { transform: 'translateX(0)' }
+          },
+          fadeIn: {
+            '0%': { opacity: '0', transform: 'translateY(20px)' },
+            '100%': { opacity: '1', transform: 'translateY(0)' }
+          }
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-teal-50">
+
+<!-- Mobile Menu Toggle Button -->
+<button id="sidebarToggle" class="fixed top-4 left-4 z-50 lg:hidden text-gray-700 p-2 bg-white shadow-lg rounded-md hover:bg-gray-50 transition-all duration-200 hover:scale-105">
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
+
+<!-- Sidebar -->
+<aside id="sidebar"
+  class="fixed top-0 left-0 h-full w-64 bg-white/95 backdrop-blur-md shadow-xl px-4 py-6 flex flex-col justify-between z-40
+         transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+
+  <!-- Logo and Navigation Container -->
+  <div class="flex flex-col">
+    <!-- Logo -->
+    <div class="flex flex-col items-center space-y-3 mb-6">
+      <img src="img/logo.png" alt="Anantam Logo" class="w-20 h-auto">
+      <h1 class="text-center text-xl font-bold text-red-700 leading-tight">
+        Anantam<br>
+        <span class="text-blue-600 text-lg">Hostel Dashboard</span>
+      </h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex flex-col items-start w-full space-y-3">
+      <a href="#" data-section="parcel" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+        </svg>
+        <span>Parcel</span>
+      </a>
+      
+      <a href="#" data-section="late-entry" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+        </svg>
+        <span>Late Entry</span>
+      </a>
+      
+      <a href="#" data-section="entry-exit" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+        </svg>
+        <span>Entry/Exit</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Help/Contact & Logout -->
+  <div class="space-y-4">
+    <a href="#" class="text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+      </svg>
+      <span>Help/Contact</span>
+    </a>
+    <a href="#" class="text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+      </svg>
+      <span>Logout</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Overlay for mobile -->
+<div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 lg:hidden opacity-0 invisible transition-all duration-300"></div>
+
+<!-- Main Content -->
+<main class="lg:ml-64 p-4 lg:p-6 min-h-screen pt-20 lg:pt-6">
+    <!-- Parcel Section -->
+  <div id="parcel-section" class="section-content animate-fade-in">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 space-y-4 lg:space-y-0 pr-4 lg:pr-0">
+        <div class="flex-1">
+          <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 pr-16 lg:pr-0">Parcel Notifications</h1>
+          <p class="text-gray-600 mt-2 text-sm lg:text-base pr-16 lg:pr-0">View your recent parcel deliveries and notifications</p>
+        </div>
+        <div class="bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg w-fit lg:w-auto self-end lg:self-auto ml-auto lg:ml-0">
+          <div class="text-2xl font-bold text-teal-600" id="parcelCount">3</div>
+          <div class="text-sm text-gray-600 whitespace-nowrap">Received Parcels</div>
+        </div>
+      </div>
+
+      <!-- Parcel Notifications -->
+      <div class="space-y-4">
+        <!-- Blinkit Notification -->
+        <div class="bg-gradient-to-r from-green-100 to-green-50 border-l-4 border-green-500 rounded-lg p-4 lg:p-6 shadow-md hover:shadow-lg transition-shadow">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-4">
+              <div class="bg-green-500 rounded-full p-2 flex-shrink-0">
+                <span class="text-white text-xl">⚡</span>
+              </div>
+              <div>
+                <h3 class="text-base lg:text-lg font-semibold text-green-800">YOUR ORDER OF BLINKIT IS REGISTERED</h3>
+                <p class="text-green-600 text-sm">Blinkit Delivery • Order #BL123456</p>
+              </div>
+            </div>
+            <div class="text-left sm:text-right">
+              <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">Received</div>
+              <p class="text-green-600 text-xs mt-1">2:30 PM Today</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amazon Notification -->
+        <div class="bg-gradient-to-r from-yellow-100 to-yellow-50 border-l-4 border-yellow-500 rounded-lg p-4 lg:p-6 shadow-md hover:shadow-lg transition-shadow">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-4">
+              <div class="bg-yellow-500 rounded-full p-2 flex-shrink-0">
+                <span class="text-white text-xl">📦</span>
+              </div>
+              <div>
+                <h3 class="text-base lg:text-lg font-semibold text-yellow-800">YOUR AMAZON PARCEL IS REGISTERED</h3>
+                <p class="text-yellow-600 text-sm">Amazon Delivery • Tracking #AMZ789012</p>
+              </div>
+            </div>
+            <div class="text-left sm:text-right">
+              <div class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">Received</div>
+              <p class="text-yellow-600 text-xs mt-1">11:45 AM Today</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bluedart Notification -->
+        <div class="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 rounded-lg p-4 lg:p-6 shadow-md hover:shadow-lg transition-shadow">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-4">
+              <div class="bg-blue-500 rounded-full p-2 flex-shrink-0">
+                <span class="text-white text-xl">🚚</span>
+              </div>
+              <div>
+                <h3 class="text-base lg:text-lg font-semibold text-blue-800">YOUR BLUEDART PARCEL IS REGISTERED</h3>
+                <p class="text-blue-600 text-sm">BlueDart Express • AWB #BD345678</p>
+              </div>
+            </div>
+            <div class="text-left sm:text-right">
+              <div class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">Received</div>
+              <p class="text-blue-600 text-xs mt-1">9:20 AM Today</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-- Entry/Exit Section -->
+<div id="entry-exit-section" class="section-content hidden animate-fade-in">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 space-y-4 lg:space-y-0 pr-4 lg:pr-0">
+      <div class="flex-1">
+        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 pr-16 lg:pr-0">Entry/Exit Records</h1>
+        <p class="text-gray-600 mt-2 text-sm lg:text-base pr-16 lg:pr-0">Track your hostel entry and exit history</p>
+      </div>
+      <div class="bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg w-fit lg:w-auto self-end lg:self-auto ml-auto lg:ml-0">
+        <div class="text-2xl font-bold text-teal-600" id="entryExitCount">3</div>
+        <div class="text-sm text-gray-600 whitespace-nowrap">Recent Records</div>
+      </div>
+    </div>
+
+    <!-- Entry/Exit Records -->
+    <div class="space-y-4">
+      <!-- Current Exit Record -->
+      <div class="bg-gradient-to-r from-orange-100 to-orange-50 border-l-4 border-orange-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-orange-500 rounded-full p-2 flex-shrink-0">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v1h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h3V3z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-orange-800">Currently Outside Hostel</h3>
+              <p class="text-orange-600 text-sm">Exit Time: August 8, 2025 at 2:15 PM</p>
+              <p class="text-orange-700 text-sm">Expected Return: August 9, 2025</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">Outside</div>
+            <p class="text-orange-600 text-xs mt-1">Active</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Previous Entry Record -->
+      <div class="bg-gradient-to-r from-green-100 to-green-50 border-l-4 border-green-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-green-500 rounded-full p-2 flex-shrink-0">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v1h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h3V3z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-green-800">Hostel Entry Completed</h3>
+              <p class="text-green-600 text-sm">Entry Time: August 7, 2025 at 11:30 PM</p>
+              <p class="text-green-700 text-sm">Previous Exit: August 7, 2025 at 9:00 AM</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">Completed</div>
+            <p class="text-green-600 text-xs mt-1">Yesterday</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Another Entry Record -->
+      <div class="bg-gradient-to-r from-green-100 to-green-50 border-l-4 border-green-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-green-500 rounded-full p-2 flex-shrink-0">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v1h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h3V3z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-green-800">Hostel Entry Completed</h3>
+              <p class="text-green-600 text-sm">Entry Time: August 6, 2025 at 8:30 PM</p>
+              <p class="text-green-700 text-sm">Previous Exit: August 6, 2025 at 10:00 AM</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">Completed</div>
+            <p class="text-green-600 text-xs mt-1">2 days ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Late Entry Section -->
+<div id="late-entry-section" class="section-content hidden animate-fade-in">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 space-y-4 lg:space-y-0 pr-4 lg:pr-0">
+      <div class="flex-1">
+        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 pr-16 lg:pr-0">Late Entry Records</h1>
+        <p class="text-gray-600 mt-2 text-sm lg:text-base pr-16 lg:pr-0">View your late entry history and violations</p>
+      </div>
+      <div class="bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg w-fit lg:w-auto self-end lg:self-auto ml-auto lg:ml-0">
+        <div class="text-2xl font-bold text-red-600" id="lateEntryCount">2</div>
+        <div class="text-sm text-gray-600 whitespace-nowrap">This Month</div>
+      </div>
+    </div>
+
+    <!-- Late Entry Records -->
+    <div class="space-y-4">
+      <!-- Recent Late Entry -->
+      <div class="bg-gradient-to-r from-red-100 to-red-50 border-l-4 border-red-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-red-500 rounded-full p-2 flex-shrink-0">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-red-800">Late Entry Recorded</h3>
+              <p class="text-red-600 text-sm">Entry Time: August 7, 2025 at 11:45 PM</p>
+              <p class="text-red-700 text-sm">Hostel Curfew: 9:00 PM • Late by: 2 hours 45 minutes</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">LATE</div>
+            <p class="text-red-600 text-xs mt-1">Yesterday</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Previous Late Entry -->
+      <div class="bg-gradient-to-r from-red-100 to-red-50 border-l-4 border-red-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="bg-red-500 rounded-full p-2 flex-shrink-0">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base lg:text-lg font-semibold text-red-800">Late Entry Recorded</h3>
+              <p class="text-red-600 text-sm">Entry Time: August 3, 2025 at 12:10 AM</p>
+              <p class="text-red-700 text-sm">Hostel Curfew: 9:00 PM • Late by: 3 hours 10 minutes</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">LATE</div>
+            <p class="text-red-600 text-xs mt-1">5 days ago</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 rounded-lg p-4 lg:p-6 shadow-md">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div>
+            <h3 class="text-base lg:text-lg font-semibold text-blue-800">Monthly Summary</h3>
+            <p class="text-blue-600 text-sm">Total Late Entries: 2</p>
+            <p class="text-blue-700 text-sm">Next violation may result in disciplinary action</p>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">INFO</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<script>
+class HostelDashboard {
+  constructor() {
+    this.init();
+    this.bindEvents();
+    this.setActiveSection('parcel');
+  }
+
+  init() {
+    this.elements = {
+      toggleButton: document.getElementById('sidebarToggle'),
+      sidebar: document.getElementById('sidebar'),
+      overlay: document.getElementById('sidebarOverlay'),
+      navItems: document.querySelectorAll('.nav-item'),
+      sections: document.querySelectorAll('.section-content'),
+      parcelCount: document.getElementById('parcelCount'),
+      entryExitCount: document.getElementById('entryExitCount'),
+      lateEntryCount: document.getElementById('lateEntryCount')
+    };
+  }
+
+  bindEvents() {
+    // Mobile sidebar toggle
+    if (this.elements.toggleButton) {
+      this.elements.toggleButton.addEventListener('click', () => this.toggleSidebar());
+    }
+
+    // Overlay click to close sidebar
+    if (this.elements.overlay) {
+      this.elements.overlay.addEventListener('click', () => this.closeSidebar());
+    }
+
+    // Navigation items
+    this.elements.navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const section = item.getAttribute('data-section');
+        if (section) {
+          this.showSection(section);
+          this.closeSidebar();
+        }
+      });
+    });
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      const isClickInsideSidebar = this.elements.sidebar?.contains(e.target);
+      const isToggleButton = e.target === this.elements.toggleButton || this.elements.toggleButton?.contains(e.target);
+      
+      if (!isClickInsideSidebar && !isToggleButton && window.innerWidth < 1024) {
+        this.closeSidebar();
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1024) {
+        this.closeSidebar();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeSidebar();
+      }
+    });
+  }
+
+  toggleSidebar() {
+    const isOpen = !this.elements.sidebar?.classList.contains('-translate-x-full');
+    if (isOpen) {
+      this.closeSidebar();
+    } else {
+      this.openSidebar();
+    }
+  }
+
+  openSidebar() {
+    this.elements.sidebar?.classList.remove('-translate-x-full');
+    this.elements.overlay?.classList.remove('opacity-0', 'invisible');
+    this.elements.overlay?.classList.add('opacity-100', 'visible');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  closeSidebar() {
+    this.elements.sidebar?.classList.add('-translate-x-full');
+    this.elements.overlay?.classList.remove('opacity-100', 'visible');
+    this.elements.overlay?.classList.add('opacity-0', 'invisible');
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  showSection(sectionName) {
+    // Hide all sections
+    this.elements.sections.forEach(section => {
+      section.classList.add('hidden');
+    });
+
+    // Show target section
+    const targetSection = document.getElementById(`${sectionName}-section`);
+    if (targetSection) {
+      targetSection.classList.remove('hidden');
+    }
+
+    this.setActiveNavItem(sectionName);
+  }
+
+  setActiveNavItem(sectionName) {
+    // Remove active state from all nav items
+    this.elements.navItems.forEach(item => {
+      item.classList.remove('bg-red-100', 'text-red-700');
+      item.classList.add('text-gray-700');
+    });
+
+    // Add active state to current nav item
+    const activeNavItem = document.querySelector(`[data-section="${sectionName}"]`);
+    if (activeNavItem) {
+      activeNavItem.classList.add('bg-red-100', 'text-red-700');
+      activeNavItem.classList.remove('text-gray-700');
+    }
+  }
+
+  setActiveSection(sectionName) {
+    this.showSection(sectionName);
+  }
+
+  // Simulate real-time updates
+  simulateRealtimeUpdates() {
+    // Update parcel count
+    if (this.elements.parcelCount) {
+      const count = Math.floor(Math.random() * 5) + 1;
+      this.elements.parcelCount.textContent = count;
+      this.animateCountUpdate(this.elements.parcelCount);
+    }
+
+    // Update entry/exit count
+    if (this.elements.entryExitCount) {
+      const count = Math.floor(Math.random() * 8) + 3;
+      this.elements.entryExitCount.textContent = count;
+      this.animateCountUpdate(this.elements.entryExitCount);
+    }
+
+    // Update late entry count
+    if (this.elements.lateEntryCount) {
+      const count = Math.floor(Math.random() * 4);
+      this.elements.lateEntryCount.textContent = count;
+      this.animateCountUpdate(this.elements.lateEntryCount);
+    }
+  }
+
+  animateCountUpdate(element) {
+    element.style.transform = 'scale(1.2)';
+    element.style.transition = 'transform 0.3s ease';
+    setTimeout(() => {
+      element.style.transform = 'scale(1)';
+    }, 300);
+  }
+
+  startRealtimeUpdates() {
+    // Run simulation every 30 seconds
+    setInterval(() => this.simulateRealtimeUpdates(), 30000);
+  }
+}
+
+// Initialize the dashboard when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  const dashboard = new HostelDashboard();
+  dashboard.startRealtimeUpdates();
+});
+
+// Handle orientation change on mobile devices
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => {
+    if (window.innerWidth >= 1024) {
+      const dashboard = new HostelDashboard();
+      dashboard.closeSidebar();
+    }
+  }, 100);
+});
+
+// Add smooth scrolling for better UX
+document.documentElement.style.scrollBehavior = 'smooth';
+
+// Add touch support for better mobile interaction
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const sidebar = document.getElementById('sidebar');
+  const swipeThreshold = 50;
+  
+  // Swipe right to open sidebar (from left edge)
+  if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+    if (sidebar?.classList.contains('-translate-x-full')) {
+      const dashboard = new HostelDashboard();
+      dashboard.openSidebar();
+    }
+  }
+  
+  // Swipe left to close sidebar
+  if (touchStartX - touchEndX > swipeThreshold && touchStartX > 200) {
+    if (!sidebar?.classList.contains('-translate-x-full')) {
+      const dashboard = new HostelDashboard();
+      dashboard.closeSidebar();
+    }
+  }
+}
+
+// Run simulation every 30 seconds (for demo)
+setInterval(simulateRealtimeUpdates, 30000);
+</script>
+</body>
+</html>
