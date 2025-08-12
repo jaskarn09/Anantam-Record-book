@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anantam Hostel Dashboard</title>
+<link rel="icon" href="img/logo.png" type="image/png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        animation: {
+          'slide-in': 'slideIn 0.3s ease-out',
+          'fade-in': 'fadeIn 0.5s ease-out',
+          'slide-up': 'slideUp 0.3s ease-out',
+          'bounce-in': 'bounceIn 0.6s ease-out',
+          'pulse-glow': 'pulseGlow 2s ease-in-out infinite'
+        },
+        keyframes: {
+          slideIn: {
+            '0%': { transform: 'translateX(-100%)' },
+            '100%': { transform: 'translateX(0)' }
+          },
+          fadeIn: {
+            '0%': { opacity: '0', transform: 'translateY(20px)' },
+            '100%': { opacity: '1', transform: 'translateY(0)' }
+          },
+          slideUp: {
+            '0%': { transform: 'translateY(100%)', opacity: '0' },
+            '100%': { transform: 'translateY(0)', opacity: '1' }
+          },
+          bounceIn: {
+            '0%': { transform: 'scale(0.3)', opacity: '0' },
+            '50%': { transform: 'scale(1.05)' },
+            '70%': { transform: 'scale(0.9)' },
+            '100%': { transform: 'scale(1)', opacity: '1' }
+          },
+          pulseGlow: {
+            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)' },
+            '50%': { transform: 'scale(1.02)', boxShadow: '0 0 30px rgba(59, 130, 246, 0.5)' }
+          }
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-teal-50">
+
+<!-- Mobile Menu Toggle Button -->
+<button id="sidebarToggle" class="fixed top-4 left-4 z-50 lg:hidden text-gray-700 p-2 bg-white shadow-lg rounded-md hover:bg-gray-50 transition-all duration-200 hover:scale-105">
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
+
+<!-- Sidebar -->
+<aside id="sidebar"
+  class="fixed top-0 left-0 h-full w-64 bg-white/95 backdrop-blur-md shadow-xl px-4 py-6 flex flex-col justify-between z-40
+         transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+
+  <!-- Logo and Navigation Container -->
+  <div class="flex flex-col">
+    <!-- Logo -->
+ <div class="flex flex-col items-center space-y-3 mb-6">
+      <img src="img/logo.png" alt="Anantam Logo" class="w-20 h-auto">
+      <h1 class="text-center text-xl font-bold text-red-700 leading-tight">
+        Anantam<br>
+        <span class="text-blue-600 text-lg">Guard Dashboard</span>
+      </h1>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="flex flex-col items-start w-full space-y-3">
+      <a href="#" data-section="home" class="nav-item active text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        <span>Home</span>
+      </a>
+
+      <a href="#" data-section="profile" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+        </svg>
+        <span>My Profile</span>
+      </a>
+
+      <a href="#" data-section="imp-details" class="nav-item text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+        </svg>
+        <span>Imp Details</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Help/Contact & Logout -->
+  <div class="space-y-4">
+    <a href="#" class="text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+      </svg>
+      <span>Help/Contact</span>
+    </a>
+    <a href="#" onclick="logout()" class="text-gray-700 hover:text-red-600 hover:bg-red-50 text-base font-medium w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-3">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+      </svg>
+      <span>Logout</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Overlay for mobile -->
+<div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 lg:hidden opacity-0 invisible transition-all duration-300"></div>
+
+<!-- Main Content -->
+<main id="mainContent" class="lg:ml-64 p-4 lg:p-6 min-h-screen pt-20 lg:pt-6">
+  <!-- Home Content (Default) -->
+  <div id="homeSection" class="section-content">
+    <!-- Welcome Header -->
+ <div class="bg-gradient-to-br from-red-500 via-red-600 to-red-700 text-white p-6 rounded-2xl shadow-xl mb-6 animate-fade-in">
+      <h1 class="text-3xl font-bold mb-2">Welcome to Dashboard</h1>
+      <p class="text-indigo-100">Manage student records, parcels, and hostel entries efficiently</p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="bg-white shadow-xl rounded-2xl p-6 mb-6 animate-fade-in">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Student Search</h2>
+      <div class="flex gap-3">
+        <input 
+          id="rollInput"
+          type="text" 
+          placeholder="Enter Roll No. (e.g., AN2024001)"
+          class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+        />
+        <button 
+          onclick="searchStudent()" 
+          class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+
+    <!-- Student Card -->
+    <div id="studentCard" class="bg-white rounded-2xl shadow-xl p-6 mb-6 animate-fade-in">
+      <div class="text-center mb-6">
+        <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        
+        <div id="studentDetails" class="space-y-2">
+          <h2 class="text-2xl font-bold text-gray-800">Student Name</h2>
+          <p class="text-gray-600">Roll - xxxxxxxx</p>
+          <p class="text-gray-600">Branch</p>
+          <p class="text-gray-600">Hostel</p>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-2xl font-bold text-green-600" id="parcelCount">0</div>
+          <div class="text-sm text-green-700 font-medium">Parcels</div>
+        </div>
+        <div class="text-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-2xl font-bold text-orange-600" id="entryExitCount">0</div>
+          <div class="text-sm text-orange-700 font-medium">Entries</div>
+        </div>
+        <div class="text-center p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-2xl font-bold text-red-600" id="lateEntryCount">0</div>
+          <div class="text-sm text-red-700 font-medium">Late</div>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="text-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm">
+        <div class="text-lg font-bold text-blue-800" id="currentStatus">No Status</div>
+        <div class="text-sm text-blue-600 mt-1" id="lastEntry">Last Entry: -</div>
+      </div>
+    </div>
+
+    <!-- Dynamic Section -->
+    <div id="dynamicSection" class="animate-fade-in"></div>
+  </div>
+
+  <!-- Profile Section -->
+  <div id="profileSection" class="section-content hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-6 max-w-2xl mx-auto animate-bounce-in">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">My Profile</h2>
+        <p class="text-gray-600">Customize your guard profile</p>
+      </div>
+      
+      <div class="text-center mb-8">
+        <div class="relative w-32 h-32 mx-auto mb-4">
+          <div id="avatarDisplay" class="w-32 h-32 rounded-full bg-gradient-to-br from-red-400 to-blue-600 flex items-center justify-center text-white text-4xl font-bold shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+            SG
+          </div>
+          <input type="file" accept="image/*" id="avatarInput" class="absolute inset-0 opacity-0 cursor-pointer">
+          <div class="absolute -bottom-2 -right-2 bg-blue-500 text-white p-2 rounded-full shadow-lg">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+            </svg>
+          </div>
+        </div>
+        <p class="text-sm text-gray-500">Click avatar to upload a new photo</p>
+      </div>
+
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
+          <input id="nameInput" type="text" value="Security Guard" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-2">Tagline</label>
+          <input id="taglineInput" type="text" value="Keeping the hostel safe 🛡️" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-2">Phone Number</label>
+          <input id="phoneInput" type="tel" value="+91 98765 43210" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+        </div>
+        <button id="saveProfile" class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-3 rounded-lg font-bold transition-all duration-200 hover:shadow-lg">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Important Details Section -->
+  <div id="imp-detailsSection" class="section-content hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-6 animate-fade-in">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-red-800 mb-2">Important Details</h2>
+        <p class="text-gray-600">Essential information for hostel security management</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Emergency Contacts -->
+        <div class="bg-red-50 p-6 rounded-xl border border-red-200 hover:shadow-lg transition-shadow">
+          <h3 class="text-xl font-bold text-red-700 mb-4 flex items-center">
+            <span class="mr-2">🚨</span>Emergency Contacts
+          </h3>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <span class="font-medium">Police:</span>
+              <a href="tel:100" class="text-red-600 font-bold hover:underline flex items-center">
+                100 <span class="ml-2">📞</span>
+              </a>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <span class="font-medium">Fire Brigade:</span>
+              <a href="tel:101" class="text-red-600 font-bold hover:underline flex items-center">
+                101 <span class="ml-2">🚒</span>
+              </a>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <span class="font-medium">Ambulance:</span>
+              <a href="tel:102" class="text-red-600 font-bold hover:underline flex items-center">
+                102 <span class="ml-2">🚑</span>
+              </a>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <span class="font-medium">Warden:</span>
+              <a href="tel:+919876543210" class="text-red-600 font-bold hover:underline flex items-center">
+                +91 98765 43210 <span class="ml-2">👨‍💼</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hostel Rules -->
+        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 hover:shadow-lg transition-shadow">
+          <h3 class="text-xl font-bold text-blue-700 mb-4 flex items-center">
+            <span class="mr-2">📋</span>Key Hostel Rules
+          </h3>
+          <ul class="space-y-3">
+            <li class="flex items-start space-x-3 p-2 bg-white rounded-lg shadow-sm">
+              <span class="text-blue-600 mt-1">🕙</span>
+              <span>Entry allowed till 09:30 PM</span>
+            </li>
+            <li class="flex items-start space-x-3 p-2 bg-white rounded-lg shadow-sm">
+              <span class="text-blue-600 mt-1">📝</span>
+              <span>Late entries require prior permission</span>
+            </li>
+            <li class="flex items-start space-x-3 p-2 bg-white rounded-lg shadow-sm">
+              <span class="text-blue-600 mt-1">👥</span>
+              <span>Visitors must register at reception</span>
+            </li>
+            <li class="flex items-start space-x-3 p-2 bg-white rounded-lg shadow-sm">
+              <span class="text-blue-600 mt-1">🔇</span>
+              <span>No loud music after 10 PM</span>
+            </li>
+            <li class="flex items-start space-x-3 p-2 bg-white rounded-lg shadow-sm">
+              <span class="text-blue-600 mt-1">🆔</span>
+              <span>ID cards mandatory for entry for off-campus students</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Working Hours -->
+        <div class="bg-green-50 p-6 rounded-xl border border-green-200 hover:shadow-lg transition-shadow">
+          <h3 class="text-xl font-bold text-green-700 mb-4 flex items-center">
+            <span class="mr-2">⏰</span>Working Hours
+          </h3>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <span class="font-medium flex items-center">
+                <span class="mr-2">🏢</span>Reception:
+              </span>
+              <span class="text-green-700 font-bold">24/7</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <span class="font-medium flex items-center">
+                <span class="mr-2">🍽️</span>Mess:
+              </span>
+              <span class="text-green-700 font-bold">7AM - 9PM</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <span class="font-medium flex items-center">
+                <span class="mr-2">👔</span>Laundry:
+              </span>
+              <span class="text-green-700 font-bold">11 AM - 7 PM</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <span class="font-medium flex items-center">
+                <span class="mr-2">🔧</span>Maintenance:
+              </span>
+              <span class="text-green-700 font-bold">9 AM - 5 PM</span>
+            </div>
+          </div>
+        </div>
+
+
+      <!-- Additional Information Section -->
+      <div class="mt-6 bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-xl border border-indigo-200">
+        <h3 class="text-xl font-bold text-indigo-700 mb-4 flex items-center">
+          <span class="mr-2">💡</span>Security Tips & Reminders
+        </h3>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <h4 class="font-semibold text-indigo-600">Daily Checklist:</h4>
+            <ul class="text-sm space-y-1 text-indigo-700">
+              <li>✓ Check all entry points</li>
+              <li>✓ Review CCTV footage</li>
+              <li>✓ Update visitor log</li>
+              <li>✓ Inspect emergency exits</li>
+            </ul>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-indigo-600">Emergency Protocols:</h4>
+            <ul class="text-sm space-y-1 text-indigo-700">
+              <li>• Always verify student IDs</li>
+              <li>• Report suspicious activities</li>
+              <li>• Keep emergency numbers handy</li>
+              <li>• Document all incidents</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Success Toast -->
+<div id="successToast" class="fixed top-4 right-4 bg-green-500 text-white p-4 rounded-xl shadow-lg z-50 hidden animate-slide-up">
+  <div class="flex items-center space-x-3">
+    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+    </svg>
+    <span id="toastMessage">Action completed successfully!</span>
+  </div>
+</div>
+
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 px-4 py-3 shadow-lg">
+  <div class="max-w-2xl mx-auto flex justify-center md:justify-between lg:justify-center gap-10">
+    
+    <button id="parcelBtn" class="flex flex-col items-center space-y-1 text-green-600 hover:text-green-700 transition-transform transform hover:scale-105">
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+      </svg>
+      <span class="text-xs font-medium">Parcels</span>
+    </button>
+
+    <button id="entryExitBtn" class="flex flex-col items-center space-y-1 text-orange-600 hover:text-orange-700 transition-transform transform hover:scale-105">
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+      </svg>
+      <span class="text-xs font-medium">Entry/Exit</span>
+    </button>
+
+    <button id="lateEntryBtn" class="flex flex-col items-center space-y-1 text-red-600 hover:text-red-700 transition-transform transform hover:scale-105">
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+      </svg>
+      <span class="text-xs font-medium">Late Entry</span>
+    </button>
+  </div>
+</div>
+
+
+<script>
+// Enhanced Student Dashboard Class
+class StudentDashboard {
+  constructor() {
+    this.currentStudent = null;
+    this.guardProfile = {
+      name: "Security Guard",
+      tagline: "Keeping the hostel safe 🛡️",
+      phone: "+91 98765 43210",
+      avatar: null
+    };
+    
+    this.elements = {
+      parcelBtn: document.getElementById('parcelBtn'),
+      entryExitBtn: document.getElementById('entryExitBtn'),
+      lateEntryBtn: document.getElementById('lateEntryBtn'),
+      successToast: document.getElementById('successToast'),
+      toastMessage: document.getElementById('toastMessage'),
+      parcelCount: document.getElementById('parcelCount'),
+      entryExitCount: document.getElementById('entryExitCount'),
+      lateEntryCount: document.getElementById('lateEntryCount'),
+      sidebar: document.getElementById('sidebar'),
+      sidebarToggle: document.getElementById('sidebarToggle'),
+      overlay: document.getElementById('sidebarOverlay')
+    };
+    
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    this.bindEvents();
+    this.initializeSidebar();
+    this.initializeNavigation();
+    this.updateCounts();
+    
+    // Update counts periodically
+    setInterval(() => this.updateCounts(), 30000);
+  }
+
+  bindEvents() {
+    // Bottom action bar events
+    this.elements.parcelBtn.addEventListener('click', () => this.showParcelManager());
+    this.elements.entryExitBtn.addEventListener('click', () => this.showEntryExitManager());
+    this.elements.lateEntryBtn.addEventListener('click', () => this.showLateEntryManager());
+  }
+
+  initializeSidebar() {
+    this.elements.sidebarToggle.addEventListener('click', () => {
+      this.elements.sidebar.classList.toggle('-translate-x-full');
+      this.elements.overlay.classList.toggle('opacity-0');
+      this.elements.overlay.classList.toggle('invisible');
+    });
+
+    this.elements.overlay.addEventListener('click', () => {
+      this.elements.sidebar.classList.add('-translate-x-full');
+      this.elements.overlay.classList.add('opacity-0', 'invisible');
+    });
+  }
+
+  initializeNavigation() {
+    const navItems = document.querySelectorAll('[data-section]');
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const section = item.dataset.section;
+        this.navigateToSection(section);
+        
+        // Update active navigation state
+        navItems.forEach(nav => nav.classList.remove('active', 'text-red-600', 'bg-red-50'));
+        item.classList.add('active', 'text-red-600', 'bg-red-50');
+        
+        // Close sidebar on mobile after navigation
+        if (window.innerWidth < 1024) {
+          this.elements.sidebar.classList.add('-translate-x-full');
+          this.elements.overlay.classList.add('opacity-0', 'invisible');
+        }
+      });
+    });
+  }
+
+  navigateToSection(section) {
+    // Hide all sections
+    document.querySelectorAll('.section-content').forEach(el => {
+      el.classList.add('hidden');
+    });
+    
+    // Show selected section - fix the ID mapping
+    let targetSectionId;
+    if (section === 'imp-details') {
+      targetSectionId = 'imp-detailsSection';
+    } else {
+      targetSectionId = `${section}Section`;
+    }
+    
+    const targetSection = document.getElementById(targetSectionId);
+    if (targetSection) {
+      targetSection.classList.remove('hidden');
+      // Add entrance animation
+      targetSection.style.opacity = '0';
+      targetSection.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        targetSection.style.transition = 'all 0.3s ease-out';
+        targetSection.style.opacity = '1';
+        targetSection.style.transform = 'translateY(0)';
+      }, 10);
+    }
+    
+    // Handle special cases
+    if (section === 'profile') {
+      this.initializeProfile();
+    }
+    
+    // Clear dynamic section when navigating away from home
+    if (section !== 'home') {
+      const dynamicSection = document.getElementById("dynamicSection");
+      if (dynamicSection) {
+        dynamicSection.innerHTML = "";
+      }
+    }
+  }
+
+  initializeProfile() {
+    // Small delay to ensure DOM is ready
+    setTimeout(() => {
+      const avatarInput = document.getElementById('avatarInput');
+      const avatarDisplay = document.getElementById('avatarDisplay');
+      const saveBtn = document.getElementById('saveProfile');
+      
+      if (!avatarInput || !avatarDisplay || !saveBtn) return;
+      
+      // Load existing profile data
+      const nameInput = document.getElementById('nameInput');
+      const taglineInput = document.getElementById('taglineInput');
+      const phoneInput = document.getElementById('phoneInput');
+      
+      if (nameInput) nameInput.value = this.guardProfile.name;
+      if (taglineInput) taglineInput.value = this.guardProfile.tagline;
+      if (phoneInput) phoneInput.value = this.guardProfile.phone;
+      
+      if (this.guardProfile.avatar) {
+        avatarDisplay.innerHTML = `<img src="${this.guardProfile.avatar}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">`;
+      }
+      
+      // Remove existing event listeners
+      const newAvatarInput = avatarInput.cloneNode(true);
+      avatarInput.parentNode.replaceChild(newAvatarInput, avatarInput);
+      
+      const newSaveBtn = saveBtn.cloneNode(true);
+      saveBtn.parentNode.replaceChild(newSaveBtn, saveBtn);
+      
+      // Avatar upload handler
+      newAvatarInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            this.guardProfile.avatar = e.target.result;
+            avatarDisplay.innerHTML = `<img src="${e.target.result}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Save profile handler
+      newSaveBtn.addEventListener('click', () => {
+        const nameVal = document.getElementById('nameInput')?.value.trim();
+        const taglineVal = document.getElementById('taglineInput')?.value.trim();
+        const phoneVal = document.getElementById('phoneInput')?.value.trim();
+        
+        this.guardProfile.name = nameVal || "Security Guard";
+        this.guardProfile.tagline = taglineVal || "Keeping the hostel safe 🛡️";
+        this.guardProfile.phone = phoneVal || "+91 98765 43210";
+        this.showToast('Profile updated successfully!');
+      });
+    }, 100);
+  }
+showParcelManager() {
+  const dynamicSection = document.getElementById("dynamicSection");
+  dynamicSection.innerHTML = `
+    <div class="bg-white rounded-2xl shadow-xl p-6 pb-20 animate-fade-in">
+      <h3 class="text-2xl font-bold text-gray-800 mb-6">📦 Parcel Management</h3>
+      
+      <div class="mb-6">
+        <label class="block text-sm font-bold text-gray-700 mb-2">Delivery Service</label>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <button onclick="dashboard.showToast('Parcel data recorded successfully!')" class="px-4 py-3 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium hover:shadow-md">
+            Zomato
+          </button>
+          <button onclick="dashboard.showToast('Parcel data recorded successfully!')" class="px-4 py-3 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-black font-medium hover:shadow-md">
+            Swiggy
+          </button>
+          <button onclick="dashboard.showToast('Parcel data recorded successfully!')" class="px-4 py-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium hover:shadow-md">
+            Bluedart
+          </button>
+          <button onclick="dashboard.showToast('Parcel data recorded successfully!')" class="px-4 py-3 rounded-lg bg-amber-100 hover:bg-amber-200 text-black font-medium hover:shadow-md">
+            Amazon
+          </button>
+          <button onclick="dashboard.showToast('Parcel data recorded successfully!')" class="px-4 py-3 rounded-lg bg-yellow-300 hover:bg-yellow-200 text-black font-medium hover:shadow-md">
+            Flipkart
+          </button>
+          <button onclick="dashboard.showToast('Parcel data recorded successfully!')" class="px-4 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-black font-medium hover:shadow-md">
+            Other
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+  showEntryExitManager() {
+    const dynamicSection = document.getElementById("dynamicSection");
+
+    // Initial view with two buttons
+    dynamicSection.innerHTML = `
+   <div class="bg-white rounded-2xl shadow-xl p-6 pb-20 animate-fade-in text-center">
+        <h3 class="text-2xl font-bold text-gray-800 mb-6">🚪 Entry/Exit Management</h3>
+        <div class="flex justify-center gap-6">
+          <button onclick="dashboard.showEntryForm()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium text-lg">
+            📥 Entry
+          </button>
+          <button onclick="dashboard.showExitForm()" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium text-lg">
+            📤 Exit
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // Entry form
+  showEntryForm() {
+    const dynamicSection = document.getElementById("dynamicSection");
+    dynamicSection.innerHTML = `
+       <div class="bg-green-50 rounded-2xl shadow-xl p-6 pb-20 animate-fade-in"> 
+        <h3 class="text-2xl font-bold text-green-700 mb-6">📥 Student Entry</h3>
+        <div class="space-y-4">
+          <input type="text" placeholder="Student Roll No." class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-400">
+          <div class="grid grid-cols-2 gap-3">
+            <input type="date" class="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-400" value="${new Date().toISOString().split('T')[0]}">
+            <input type="time" class="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-400" value="${new Date().toTimeString().slice(0,5)}">
+          </div>
+          <button onclick="dashboard.recordEntry()" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-medium">
+            Record Entry
+          </button>
+          <button onclick="dashboard.showEntryExitManager()" class="w-full mt-2 bg-gray-300 hover:bg-gray-400 text-black py-2 rounded-lg font-medium">
+            ⬅ Back
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // Exit form
+  showExitForm() {
+    const dynamicSection = document.getElementById("dynamicSection");
+    dynamicSection.innerHTML = `
+     <div class="bg-orange-50 rounded-2xl shadow-xl p-6 pb-20 animate-fade-in"> 
+        <h3 class="text-2xl font-bold text-orange-700 mb-6">📤 Student Exit</h3>
+        <div class="space-y-4">
+          <input type="text" placeholder="Student Roll No." class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-400">
+          <div class="grid grid-cols-2 gap-3">
+            <input type="date" class="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-400" value="${new Date().toISOString().split('T')[0]}">
+            <input type="time" class="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-400" value="${new Date().toTimeString().slice(0,5)}">
+          </div>
+          <input type="date" placeholder="Expected Return Date" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-400">
+          <button onclick="dashboard.recordExit()" class="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg font-medium">
+            Record Exit
+          </button>
+          <button onclick="dashboard.showEntryExitManager()" class="w-full mt-2 bg-gray-300 hover:bg-gray-400 text-black py-2 rounded-lg font-medium">
+            ⬅ Back
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  showLateEntryManager() {
+  const dynamicSection = document.getElementById("dynamicSection");
+
+dynamicSection.innerHTML = `
+  <div class="bg-white rounded-2xl shadow-xl p-6 text-center animate-fade-in mb-20">
+    <h3 class="text-2xl font-bold text-gray-800 mb-6">⏰ Late Entry Management</h3>
+    <button id="recordLateEntryBtn" class="bg-red-500 hover:bg-red-600 text-white py-3 px-6 rounded-lg font-medium">
+      ➕ Record Late Entry
+    </button>
+  </div>
+`;
+
+const btn = document.getElementById("recordLateEntryBtn");
+btn.addEventListener("click", () => {
+  // Show toast message
+  this.showToast('Late Entry recorded successfully!');
+
+  // Change button style & text
+  btn.innerHTML = "✅ Done";
+  btn.classList.remove("bg-red-500", "hover:bg-red-600");
+  btn.classList.add("bg-green-500", "hover:bg-green-600");
+});
+  }
+  recordParcelDelivery() {
+    this.showToast('Parcel delivery recorded successfully!');
+    this.updateCounts();
+  }
+
+  notifyStudent() {
+    this.showToast('Student notification sent!');
+  }
+
+  recordEntry() {
+    this.showToast('Student entry recorded successfully!');
+    this.updateCounts();
+  }
+
+  recordExit() {
+    this.showToast('Student exit recorded successfully!');
+    this.updateCounts();
+  }
+
+  recordLateEntry() {
+    this.showToast('Late entry recorded and reported!');
+    this.updateCounts();
+    // Update today's late count
+    const todayLateCount = document.getElementById('todayLateCount');
+    if (todayLateCount) {
+      todayLateCount.textContent = parseInt(todayLateCount.textContent) + 1;
+    }
+  }
+
+  showToast(message) {
+    this.elements.toastMessage.textContent = message;
+    this.elements.successToast.classList.remove('hidden');
+    setTimeout(() => {
+      this.elements.successToast.classList.add('hidden');
+    }, 3000);
+  }
+
+  updateCounts() {
+    if (this.currentStudent) {
+      // Don't update if showing real student data
+      return;
+    }
+    this.elements.parcelCount.textContent = Math.floor(Math.random() * 5) + 1;
+    this.elements.entryExitCount.textContent = Math.floor(Math.random() * 8) + 1;
+    this.elements.lateEntryCount.textContent = Math.floor(Math.random() * 3);
+  }
+}
+
+// Sample student data
+const sampleData = {
+  "AN2024001": {
+    name: "Raj Patel",
+    roll: "AN2024001",
+    branch: "Computer Science Engineering",
+    phone: "9876543210",
+    hostel: "Block A - Room 201",
+    email: "raj.patel@anantam.edu",
+    stats: { parcels: 5, entries: 12, late: 2 },
+    status: "Currently Inside Campus",
+    lastEntry: "Today 6:30 PM"
+  },
+  "AN2024002": {
+    name: "Priya Singh",
+    roll: "AN2024002",
+    branch: "Electronics & Communication",
+    phone: "9876543211",
+    hostel: "Block B - Room 105",
+    email: "priya.singh@anantam.edu",
+    stats: { parcels: 3, entries: 8, late: 1 },
+    status: "Outside Campus",
+    lastEntry: "Yesterday 9:15 PM"
+  },
+  "AN2024003": {
+    name: "Amit Kumar",
+    roll: "AN2024003",
+    branch: "Mechanical Engineering",
+    phone: "9876543212",
+    hostel: "Block C - Room 302",
+    email: "amit.kumar@anantam.edu",
+    stats: { parcels: 7, entries: 15, late: 4 },
+    status: "Currently Inside Campus",
+    lastEntry: "Today 11:45 PM (Late Entry)"
+  }
+};
+
+function searchStudent() {
+  const roll = document.getElementById("rollInput").value.trim().toUpperCase();
+  const student = sampleData[roll];
+  
+  if (student) {
+    dashboard.currentStudent = student;
+    
+    document.getElementById("studentDetails").innerHTML = `
+      <h2 class="text-2xl font-bold text-gray-800">${student.name}</h2>
+      <p class="text-gray-600">Roll - ${student.roll}</p>
+      <p class="text-gray-600">${student.branch}</p>
+      <p class="text-gray-600">${student.hostel}</p>
+      <p class="text-sm text-blue-600 mt-2">📧 ${student.email}</p>
+      <p class="text-sm text-green-600">📱 ${student.phone}</p>
+    `;
+    
+    document.getElementById("parcelCount").textContent = student.stats.parcels;
+    document.getElementById("entryExitCount").textContent = student.stats.entries;
+    document.getElementById("lateEntryCount").textContent = student.stats.late;
+    document.getElementById("currentStatus").textContent = student.status;
+    document.getElementById("lastEntry").textContent = "Last Entry: " + student.lastEntry;
+    
+    dashboard.showToast(`Student ${student.name} found!`);
+  } else {
+    dashboard.currentStudent = null;
+    
+    document.getElementById("studentDetails").innerHTML = `
+      <h2 class="text-2xl font-bold text-gray-800">Student Name</h2>
+      <p class="text-gray-600">Roll - xxxxxxxx</p>
+      <p class="text-gray-600">Branch</p>
+      <p class="text-gray-600">Hostel</p>
+    `;
+    
+    document.getElementById("parcelCount").textContent = 0;
+    document.getElementById("entryExitCount").textContent = 0;
+    document.getElementById("lateEntryCount").textContent = 0;
+    document.getElementById("currentStatus").textContent = "No Status";
+    document.getElementById("lastEntry").textContent = "Last Entry: -";
+    
+    if (roll) {
+      dashboard.showToast("Student not found. Please check the roll number.");
+    }
+  }
+  
+  document.getElementById("dynamicSection").innerHTML = "";
+}
+
+function logout() {
+  if (confirm("Are you sure you want to logout?")) {
+    dashboard.showToast("Logging out...");
+    setTimeout(() => {
+      alert("Thank you for using Anantam Hostel Dashboard!");
+      // In a real app, redirect to login page
+      location.reload();
+    }, 1500);
+  }
+}
+
+// Initialize the dashboard
+let dashboard;
+document.addEventListener('DOMContentLoaded', () => {
+  dashboard = new StudentDashboard();
+  
+  // Add Enter key support for search
+  document.getElementById('rollInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      searchStudent();
+    }
+  });
+  
+  // Show welcome message
+  setTimeout(() => {
+    dashboard.showToast("Welcome to Anantam Hostel Dashboard!");
+  }, 1000);
+});
+</script>
+
+</body>
+</html>
