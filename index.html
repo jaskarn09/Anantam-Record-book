@@ -115,6 +115,9 @@
               <button type="submit"
                 class="w-full bg-red-700 hover:bg-red-800 text-white py-2.5 sm:py-3 rounded-lg transition-all font-medium text-sm sm:text-base">Login</button>
 
+              <!-- Login Status Message -->
+              <div id="loginStatus" class="text-center text-sm mt-2 hidden"></div>
+
               <div class="text-center">
                 <a href="#" id="forgotPasswordLink" class="text-red-600 hover:text-red-700 text-xs sm:text-sm font-medium">Forgotten your username or
                   password?</a>
@@ -188,6 +191,22 @@
   </div>
 
 <script>
+  // User credentials 
+  const userCredentials = {
+    // Students
+    "student@anantam.edu": { password: "student123", redirectTo: "dashboard.html", type: "student" },
+    "AN2024001": { password: "student123", redirectTo: "dashboard.html", type: "student" },
+    "AN2024002": { password: "student456", redirectTo: "dashboard.html", type: "student" },
+    
+    // Caretakers
+    "caretaker@anantam.edu": { password: "caretaker123", redirectTo: "caretaker.html", type: "caretaker" },
+    "care001": { password: "caretaker123", redirectTo: "caretaker.html", type: "caretaker" },
+    
+    // Guards  
+    "guard@anantam.edu": { password: "guard123", redirectTo: "guardview.html", type: "guard" },
+    "security001": { password: "guard123", redirectTo: "guardview.html", type: "guard" }
+  };
+
   // Mobile menu toggle
   document.addEventListener('DOMContentLoaded', function () {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -209,33 +228,57 @@
     const username = document.getElementById('username');
     const password = document.getElementById('password');
     const loginBtn = loginFormElement.querySelector('button[type="submit"]');
+    const loginStatus = document.getElementById('loginStatus');
+
+    // Function to show status messages
+    function showStatus(message, isError = false) {
+      loginStatus.textContent = message;
+      loginStatus.className = `text-center text-sm mt-2 ${isError ? 'text-red-600' : 'text-green-600'}`;
+      loginStatus.classList.remove('hidden');
+      
+      setTimeout(() => {
+        loginStatus.classList.add('hidden');
+      }, 3000);
+    }
 
     // Login form submission
     loginFormElement.addEventListener('submit', function (e) {
       e.preventDefault();
 
+      // Validation
       if (!username.value.trim()) {
-        alert('Please enter your username or email');
+        showStatus('Please enter your username or email', true);
         username.focus();
         return;
       }
 
       if (!password.value.trim()) {
-        alert('Please enter your password');
+        showStatus('Please enter your password', true);
         password.focus();
         return;
       }
 
-      // Simulate login process
-      loginBtn.textContent = 'Logging in...';
-      loginBtn.disabled = true;
+      // Check credentials
+      const enteredUsername = username.value.trim();
+      const enteredPassword = password.value.trim();
+      const userAccount = userCredentials[enteredUsername];
 
-      setTimeout(() => {
-        // Here you would typically redirect to dashboard or handle login
-        alert('Login successful! Redirecting to dashboard...');
-        loginBtn.textContent = 'Login';
-        loginBtn.disabled = false;
-      }, 1500);
+      if (userAccount && userAccount.password === enteredPassword) {
+        // Successful login
+        loginBtn.textContent = 'Logging in...';
+        loginBtn.disabled = true;
+        showStatus('Login successful! Redirecting...', false);
+
+        setTimeout(() => {
+          // Redirect to appropriate dashboard
+          window.location.href = userAccount.redirectTo;
+        }, 1500);
+      } else {
+        // Failed login
+        showStatus('Invalid username or password. Please try again.', true);
+        password.value = ''; // Clear password field
+        password.focus();
+      }
     });
 
     // Input focus effects
@@ -297,8 +340,6 @@
         getOtpBtn.textContent = 'Get OTP';
         getOtpBtn.disabled = false;
         
-        // Here you could redirect to a password reset OTP verification form
-        // For now, just show a success message
       }, 2000);
     });
 
@@ -310,5 +351,4 @@
   });
 </script>
 </body>
-
 </html>
